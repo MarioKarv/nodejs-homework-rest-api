@@ -1,4 +1,5 @@
 const express = require("express");
+
 const { schemas } = require("../../models/contacts");
 const validateBody = require("../../utils/validateBody");
 
@@ -24,5 +25,6 @@ contactsRouter.patch(
   validateBody(schemas.updateFavoriteSchema),
   ctrl.updateStatusContact
 );
+
 
 module.exports = contactsRouter;
