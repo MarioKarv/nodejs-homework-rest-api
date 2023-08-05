@@ -9,8 +9,12 @@ const listContacts = async (req, res) => {
   const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
     skip,
     limit,
-  }).populate("owner", "name email");
-  res.json(result);
+  }).populate("owner", "name email")
+  const filteredContacts =
+    favorite === undefined
+      ? result
+      : result.filter((contact) => contact.favorite.toString() === favorite);
+  res.json(filteredContacts);
 };
 const contactsListFavourite = async (req, res) => {
   const { _id: owner } = req.user;
