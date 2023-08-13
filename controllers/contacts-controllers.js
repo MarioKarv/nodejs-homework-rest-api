@@ -6,14 +6,15 @@ const listContacts = async (req, res) => {
   const { _id: owner } = req.user;
   const { page = 1, limit = 20, favorite } = req.query;
   const skip = (page - 1) * limit;
-  const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
-    skip,
-    limit,
-  }).populate("owner", "name email")
+  const result = await Contact.find({ owner }, "-createdAt -updatedAt", { skip, limit, }).populate(
+    "owner",
+    "name email"
+  )
   const filteredContacts =
     favorite === undefined
       ? result
       : result.filter((contact) => contact.favorite.toString() === favorite);
+  
   res.json(filteredContacts);
 };
 const contactsListFavourite = async (req, res) => {
@@ -48,9 +49,7 @@ const removeContact = async (req, res, next) => {
 
 const updateContact = async (req, res, next) => {
   const { contactId } = req.params;
-  const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
-    new: true,
-  });
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {new: true,});
 
   if (!updatedContact) {
     return ErrorCreator(404);
